@@ -161,8 +161,14 @@ cython_debug/
 
 examples/results/*
 gfpgan/*
-checkpoints/
+checkpoints/*
+assets/*
 results/*
 Dockerfile
 start_docker.sh
 start.sh
+
+checkpoints
+
+# Mac
+.DS_Store
