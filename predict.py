@@ -7,6 +7,7 @@ from src.test_audio2coeff import Audio2Coeff
 from src.facerender.animate import AnimateFromCoeff
 from src.generate_batch import get_data
 from src.generate_facerender_batch import get_facerender_data
+from src.utils.init_path import init_path
 from cog import BasePredictor, Input, Path
 
 checkpoints = "checkpoints"
@@ -17,48 +18,25 @@ class Predictor(BasePredictor):
         """Load the model into memory to make running multiple predictions efficient"""
         device = "cuda"
 
-        path_of_lm_croper = os.path.join(
-            checkpoints, "shape_predictor_68_face_landmarks.dat"
-        )
-        path_of_net_recon_model = os.path.join(checkpoints, "epoch_20.pth")
-        dir_of_BFM_fitting = os.path.join(checkpoints, "BFM_Fitting")
-        wav2lip_checkpoint = os.path.join(checkpoints, "wav2lip.pth")
-
-        audio2pose_checkpoint = os.path.join(checkpoints, "auido2pose_00140-model.pth")
-        audio2pose_yaml_path = os.path.join("src", "config", "auido2pose.yaml")
-
-        audio2exp_checkpoint = os.path.join(checkpoints, "auido2exp_00300-model.pth")
-        audio2exp_yaml_path = os.path.join("src", "config", "auido2exp.yaml")
-
-        free_view_checkpoint = os.path.join(
-            checkpoints, "facevid2vid_00189-model.pth.tar"
-        )
+        
+        sadtalker_paths = init_path(checkpoints,os.path.join("src","config"))
 
         # init model
-        self.preprocess_model = CropAndExtract(
-            path_of_lm_croper, path_of_net_recon_model, dir_of_BFM_fitting, device
+        self.preprocess_model = CropAndExtract(sadtalker_paths, device
         )
 
         self.audio_to_coeff = Audio2Coeff(
-            audio2pose_checkpoint,
-            audio2pose_yaml_path,
-            audio2exp_checkpoint,
-            audio2exp_yaml_path,
-            wav2lip_checkpoint,
+            sadtalker_paths,
             device,
         )
 
         self.animate_from_coeff = {
             "full": AnimateFromCoeff(
-                free_view_checkpoint,
-                os.path.join(checkpoints, "mapping_00109-model.pth.tar"),
-                os.path.join("src", "config", "facerender_still.yaml"),
+                sadtalker_paths,
                 device,
             ),
             "others": AnimateFromCoeff(
-                free_view_checkpoint,
-                os.path.join(checkpoints, "mapping_00229-model.pth.tar"),
-                os.path.join("src", "config", "facerender.yaml"),
+                sadtalker_paths,
                 device,
             ),
         }
@@ -204,7 +182,7 @@ def load_default():
         net_recon="resnet50",
         init_path=None,
         use_last_fc=False,
-        bfm_folder="./checkpoints/BFM_Fitting/",
+        bfm_folder="./src/config/",
         bfm_model="BFM_model_front.mat",
         focal=1015.0,
         center=112.0,

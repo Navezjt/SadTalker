@@ -27,9 +27,6 @@
 <br>
 
 
-
-
-
 ![sadtalker](https://user-images.githubusercontent.com/4397546/222490039-b1f6156b-bf00-405b-9fda-0c9a9156f991.gif)
 
 <b>TL;DR: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; single portrait image 🙎‍♂️  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; audio 🎤  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; talking head video 🎞.</b>
@@ -59,6 +56,10 @@ https://user-images.githubusercontent.com/4397546/231495639-5d4bb925-ea64-4a36-a
 
 ## 📋 Changelog (Previous changelog can be founded [here](docs/changlelog.md))
 
+- __[2023.06.12]__: add more new features in WEBUI extension, see the discussion [here](https://github.com/OpenTalker/SadTalker/discussions/386).
+
+- __[2023.06.05]__: release a new 512 beta face model. Fixed some bugs and improve the performance.
+
 - __[2023.04.15]__: Adding automatic1111 colab by @camenduru, thanks for this awesome colab: [![sd webui-colab](https://img.shields.io/badge/Automatic1111-Colab-green)](https://colab.research.google.com/github/camenduru/stable-diffusion-webui-colab/blob/main/video/stable/stable_diffusion_1_5_video_webui_colab.ipynb).
 
 - __[2023.04.12]__: adding a more detailed sd-webui installation document, fixed reinstallation problem.
@@ -70,24 +71,11 @@ https://user-images.githubusercontent.com/4397546/231495639-5d4bb925-ea64-4a36-a
 - __[2023.04.08]__: v0.0.2, full image animation, adding baidu driver for download checkpoints. Optimizing the logic about enhancer.
 
 
-## 🚧 TODO
-
-<details><summary> Previous TODOs </summary>
-
-- [x] Generating 2D face from a single Image.
-- [x] Generating 3D face from Audio.
-- [x] Generating 4D free-view talking examples from audio and a single image.
-- [x] Gradio/Colab Demo.
-- [x] Full body/image Generation.
-- [x] integrade with stable-diffusion-web-ui. (stay tunning!)
-</details>
-
-
-- [ ] Audio-driven Anime Avatar.
-- [ ] training code of each componments.
-
+## 🚧 TODO: See the Discussion https://github.com/OpenTalker/SadTalker/issues/280
 
 ## If you have any problem, please view our [FAQ](docs/FAQ.md) before opening an issue.
+
+
 
 ## ⚙️ 1. Installation.
 
@@ -141,23 +129,30 @@ bash scripts/download_models.sh
 Other alternatives:
 > we also provide an offline patch (`gfpgan/`), thus, no model will be downloaded when generating.
 
-**Google Driver**: download our pre-trained model from [ this link (main checkpoints)](https://drive.google.com/drive/folders/1Wd88VDoLhVzYsQ30_qDVluQr_Xm46yHT?usp=sharing) and [ gfpgan (offline patch)](https://drive.google.com/file/d/19AIBsmfcHW6BRJmeqSFlG5fL445Xmsyi?usp=sharing)
+**Google Driver**: download our pre-trained model from [ this link (main checkpoints)](https://drive.google.com/file/d/1gwWh45pF7aelNP_P78uDJL8Sycep-K7j/view?usp=sharing) and [ gfpgan (offline patch)](https://drive.google.com/file/d/19AIBsmfcHW6BRJmeqSFlG5fL445Xmsyi?usp=sharing)
 
 **Github Release Page**: download all the files from the [lastest github release page](https://github.com/Winfredy/SadTalker/releases), and then, put it in ./checkpoints.
 
-**百度云盘**: we provided the downloaded model in [checkpoints,  提取码: sadt.](https://pan.baidu.com/s/1nXuVNd0exUl37ISwWqbFGA?pwd=sadt) And [gfpgan,  提取码: sadt.](https://pan.baidu.com/s/1kb1BCPaLOWX1JJb9Czbn6w?pwd=sadt)
+**百度云盘**: we provided the downloaded model in [checkpoints,  提取码: sadt.](https://pan.baidu.com/s/1P4fRgk9gaSutZnn8YW034Q?pwd=sadt) And [gfpgan,  提取码: sadt.](https://pan.baidu.com/s/1kb1BCPaLOWX1JJb9Czbn6w?pwd=sadt)
 
 
 
 <details><summary>Model Details</summary>
 
-The final folder will be shown as:
-
-<img width="331" alt="image" src="https://user-images.githubusercontent.com/4397546/232511411-4ca75cbf-a434-48c5-9ae0-9009e8316484.png">
-
 
 Model explains:
 
+##### New version 
+| Model | Description
+| :--- | :----------
+|checkpoints/mapping_00229-model.pth.tar | Pre-trained MappingNet in Sadtalker.
+|checkpoints/mapping_00109-model.pth.tar | Pre-trained MappingNet in Sadtalker.
+|checkpoints/SadTalker_V0.0.2_256.safetensors | packaged sadtalker checkpoints of old version, 256 face render).
+|checkpoints/SadTalker_V0.0.2_512.safetensors | packaged sadtalker checkpoints of old version, 512 face render).
+|gfpgan/weights | Face detection and enhanced models used in `facexlib` and `gfpgan`.
+  
+  
+##### Old version
 | Model | Description
 | :--- | :----------
 |checkpoints/auido2exp_00300-model.pth | Pre-trained ExpNet in Sadtalker.
@@ -172,6 +167,10 @@ Model explains:
 |checkpoints/hub | Face detection models used in [face alignment](https://github.com/1adrianb/face-alignment).
 |gfpgan/weights | Face detection and enhanced models used in `facexlib` and `gfpgan`.
 
+The final folder will be shown as:
+
+<img width="331" alt="image" src="https://user-images.githubusercontent.com/4397546/232511411-4ca75cbf-a434-48c5-9ae0-9009e8316484.png">
+
 
 </details>
 
@@ -183,14 +182,17 @@ Model explains:
 
 **Local Autiomatic1111 stable-diffusion webui extension**: please refer to [Autiomatic1111 stable-diffusion webui docs](docs/webui_extension.md).
 
-**Local gradio demo**: Similar to our [hugging-face demo](https://huggingface.co/spaces/vinthony/SadTalker) can be run by:
+**Local gradio demo(highly recommanded!)**: Similar to our [hugging-face demo](https://huggingface.co/spaces/vinthony/SadTalker) can be run by:
 
 ```bash
 ## you need manually install TTS(https://github.com/coqui-ai/TTS) via `pip install tts` in advanced.
 python app.py
 ```
 
-**Local windows gradio demo**: just double click `webui.bat`, the requirements will be installed automatically.
+**Local gradio demo(highly recommanded!)**: 
+
+- windows: just double click `webui.bat`, the requirements will be installed automatically.
+- Linux/Mac OS: run `bash webui.sh` to start the webui.
 
 
 ### Manually usages:
